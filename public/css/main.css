@@ -1,48 +1,165 @@
+/* Google Meet-inspired video call UI */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #202124;
+    color: #e8eaed;
+}
+
+/* Main heading */
 h1 {
     text-align: center;
+    font-size: 28px;
+    font-weight: 500;
+    color: #e8eaed;
+    margin: 10px 0 24px;
 }
 
+/* Participant video grid */
 .grid-container {
     display: grid;
-    grid-template-columns: auto auto auto;
-    /* padding: 10px; */
-}
-.grid-item {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
     padding: 10px;
+    width: 100%;
+    align-items: center;
+}
+
+/* Individual participant tile */
+.grid-item {
     position: relative;
-    width: fit-content;
-    height: fit-content;
-    /* border: 1px solid rgba(0, 0, 0, 0.8); */
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #3c4043;
+    border-radius: 12px;
+    box-shadow: none;
 }
-.grid-item p {
-    font-size: 20px;
-    margin: 0;
-    position: absolute;
-    color: white;
-    font-weight: bold;
-}
+
+/* Participant video */
 .grid-item video {
-    max-height: 300px;
-    max-width: 100%;
-    box-shadow: -2px -2px 15px #888888;
-}
-.grid-item .kick_btn {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-#localVideo-container {
-    height: 250px;
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    box-shadow: -2px -2px 15px #888888;
-}
-
-#localVideo-container video {
+    display: block;
     width: 100%;
     height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: cover;
+    border-radius: 12px;
+    background: #3c4043;
 }
+
+/* Participant name */
+.grid-item p {
+    position: absolute;
+    left: 14px;
+    bottom: 12px;
+    z-index: 2;
+    margin: 0;
+    padding: 7px 10px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    background: rgba(32, 33, 36, 0.75);
+    border-radius: 6px;
+    max-width: calc(100% - 70px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Kick / remove participant button */
+.grid-item .kick_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    bottom: auto;
+    z-index: 3;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    background: rgba(32, 33, 36, 0.85);
+    color: #f28b82;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.grid-item .kick_btn:hover {
+    background: #5f2120;
+}
+
+/* Local camera preview */
+#localVideo-container {
+    position: fixed;
+    right: 24px;
+    bottom: 100px;
+    width: 220px;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    z-index: 10;
+    overflow: hidden;
+    background: #3c4043;
+    border: 2px solid rgba(232, 234, 237, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Local camera video */
+#localVideo-container video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Tablet layout */
+@media (max-width: 900px) {
+    .grid-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    #localVideo-container {
+        width: 180px;
+        right: 16px;
+        bottom: 90px;
+    }
+}
+
+/* Mobile layout */
+@media (max-width: 600px) {
+    body {
+        padding: 8px;
+    }
+
+    h1 {
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+
+    .grid-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 4px;
+    }
+
+    .grid-item {
+        aspect-ratio: 16 / 9;
+    }
+
+    #localVideo-container {
+        width: 120px;
+        right: 12px;
+        bottom: 80px;
+    }
+}
+
